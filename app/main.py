@@ -48,7 +48,9 @@ def main():
             case "echo":
                 print(str_args)
             case "cd":
-                if os.path.exists(str_args):
+                if str_args == '~':
+                    os.chdir(os.path.expanduser('~'))
+                elif os.path.exists(str_args):
                     os.chdir(str_args)
                 else:
                     print(f'cd: {str_args}: No such file or directory')
