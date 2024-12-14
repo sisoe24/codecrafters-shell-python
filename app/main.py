@@ -47,6 +47,8 @@ def main():
                 sys.exit(0)
             case "echo":
                 print(str_args)
+            case "pwd":
+                print(os.getcwd())
             case _:
                 try:
                     subprocess.run([command.bin, *command.args])
