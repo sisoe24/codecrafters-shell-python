@@ -47,6 +47,11 @@ def main():
                 sys.exit(0)
             case "echo":
                 print(str_args)
+            case "cd":
+                if os.path.exists(str_args):
+                    os.chdir(str_args)
+                else:
+                    print(f'cd: {str_args}: No such file or directory')
             case "pwd":
                 print(os.getcwd())
             case _:
