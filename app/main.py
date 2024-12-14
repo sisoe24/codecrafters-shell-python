@@ -1,12 +1,12 @@
 import sys
 from dataclasses import dataclass
 
+COMMANDS = ['type', 'pwd', 'echo', 'cd', 'exit']
 
 @dataclass
 class Command:
     bin: str
     args: list[str]
-
 
 
 def parseInput(text: str) -> Command:
@@ -20,10 +20,16 @@ def main():
 
     while True:
         result = input()
+
         command = parseInput(result)
         str_args = ' '.join(command.args)
 
         match command.bin:
+            case "type":
+                if str_args in COMMANDS:
+                    print(f'{str_args} is a shell builtin')
+                else:
+                    print(f'{str_args}: not found')
             case "exit":
                 sys.exit(0)
             case "echo":
