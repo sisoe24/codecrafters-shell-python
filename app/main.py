@@ -1,10 +1,12 @@
 import os
 import sys
+import shlex
 from dataclasses import dataclass
 import subprocess
 
 PATH = os.environ['PATH']
 COMMANDS = ['type', 'pwd', 'echo', 'cd', 'exit']
+
 
 @dataclass
 class Command:
@@ -13,8 +15,8 @@ class Command:
 
 
 def parseInput(text: str) -> Command:
-    parts = text.split(' ')
-    return Command(bin=parts[0], args=parts[1:])
+    args = shlex.split(text)
+    return Command(bin=args[0], args=args[1:])
 
 
 def get_executable_path(bin: str) -> str | None:
@@ -24,9 +26,9 @@ def get_executable_path(bin: str) -> str | None:
             return fp
     return None
 
-def main():
 
-    sys.stdout.write("$ ")
+def main():
+    sys.stdout.write('$ ')
 
     while True:
         result = input()
@@ -35,7 +37,7 @@ def main():
         str_args = ' '.join(command.args)
 
         match command.bin:
-            case "type":
+            case 'type':
                 if str_args in COMMANDS:
                     print(f'{str_args} is a shell builtin')
                 elif path := get_executable_path(str_args):
@@ -43,18 +45,18 @@ def main():
                 else:
                     print(f'{str_args}: not found')
 
-            case "exit":
+            case 'exit':
                 sys.exit(0)
-            case "echo":
+            case 'echo':
                 print(str_args)
-            case "cd":
+            case 'cd':
                 if str_args == '~':
                     os.chdir(os.path.expanduser('~'))
                 elif os.path.exists(str_args):
                     os.chdir(str_args)
                 else:
                     print(f'cd: {str_args}: No such file or directory')
-            case "pwd":
+            case 'pwd':
                 print(os.getcwd())
             case _:
                 try:
@@ -62,8 +64,8 @@ def main():
                 except Exception:
                     print(f'{result}: command not found')
 
-        sys.stdout.write("$ ")
+        sys.stdout.write('$ ')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
