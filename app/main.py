@@ -1,6 +1,8 @@
+import os
 import sys
 from dataclasses import dataclass
 
+PATH = os.environ['PATH']
 COMMANDS = ['type', 'pwd', 'echo', 'cd', 'exit']
 
 @dataclass
@@ -13,6 +15,13 @@ def parseInput(text: str) -> Command:
     parts = text.split(' ')
     return Command(bin=parts[0], args=parts[1:])
 
+
+def get_executable_path(bin: str) -> str | None:
+    for path in PATH.split(os.pathsep):
+        fp = os.path.join(path, bin)
+        if os.path.exists(fp):
+            return fp
+    return None
 
 def main():
 
@@ -28,8 +37,11 @@ def main():
             case "type":
                 if str_args in COMMANDS:
                     print(f'{str_args} is a shell builtin')
+                elif path := get_executable_path(str_args):
+                    print(f'{str_args} is {path}')
                 else:
                     print(f'{str_args}: not found')
+
             case "exit":
                 sys.exit(0)
             case "echo":
