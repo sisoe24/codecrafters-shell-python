@@ -7,7 +7,13 @@ def main():
 
     while True:
         result = input()
-        print(f'{result}: command not found')
+
+        match result:
+            case "exit 0":
+                sys.exit(0)
+            case _:
+                print(f'{result}: command not found')
+
         sys.stdout.write("$ ")
 
 
