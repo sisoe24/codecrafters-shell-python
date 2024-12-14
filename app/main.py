@@ -1,6 +1,7 @@
 import os
 import sys
 from dataclasses import dataclass
+import subprocess
 
 PATH = os.environ['PATH']
 COMMANDS = ['type', 'pwd', 'echo', 'cd', 'exit']
@@ -47,7 +48,10 @@ def main():
             case "echo":
                 print(str_args)
             case _:
-                print(f'{result}: command not found')
+                try:
+                    subprocess.run([command.bin, *command.args])
+                except Exception:
+                    print(f'{result}: command not found')
 
         sys.stdout.write("$ ")
 
