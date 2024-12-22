@@ -24,7 +24,7 @@ class Command:
         args: list[str] = []
 
         for i, arg in enumerate(self.args):
-            if arg in {'>', '>>', '1>', '2>'}:
+            if arg in {'>', '>>', '1>', '2>', '1>>', '2>>'}:
                 redirect = arg
                 output = ' '.join(self.args[i + 1:])
                 break
